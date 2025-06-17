@@ -10,25 +10,25 @@
         <%= metaTitle %>
     </title>
     <script>
-        // Генерация URL для подписки
+        // Generating URL for subscriptions
         let userData = {};
         let subscriptionUrl = window.location.href;
         try {
             const panelData = JSON.parse(atob('<%- panelData %>'));
             if (panelData && panelData.response) {
                 userData = panelData.response.user || {};
-                // Сохраняем subscription URL
+                // Save subscription URL
                 subscriptionUrl = panelData.response.subscriptionUrl || window.location.href;
             }
         } catch (error) {
             console.error('Error parsing panel data:', error);
         }
 
-        // Обновляем URL для подписки
+        // Updating URL for subscription
         const SUB_URL = subscriptionUrl;
         const happUrl = "happ://add/" + encodeURIComponent(SUB_URL) + "#" + encodeURIComponent(userData.username || 'Title');
 
-        // Функция для обработки URL параметров
+        // Function for URL parameters processing
         function handleUrlParameters() {
             const urlParams = new URLSearchParams(window.location.search);
             const happUrlParam = urlParams.get("happ_url");
@@ -38,7 +38,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            // Обработка URL параметров
+            // URL parameters processing
             handleUrlParameters();
         });
 
@@ -50,12 +50,12 @@
             }
 
             const platform = detectPlatform();
-            const urlScheme = 'vmess://'; // или другие схемы в зависимости от конфигурации
+            const urlScheme = 'vmess://'; // or other circuits depending on the configuration
 
-            // Пытаемся открыть приложение
+            // Trying to open the app
             window.location.href = urlScheme + subscriptionUrl;
 
-            // Показываем модальное окно с вариантами скачивания
+            // Show a modal window with download options
             setTimeout(() => {
                 const modal = document.getElementById('modal');
                 if (modal) {
@@ -1225,12 +1225,12 @@
         }
 
         function getUserLocale() {
-            // Проверка параметра lang в URL
+            // Checking lang parameter in URL
             const urlParams = new URLSearchParams(window.location.search);
             const urlLang = urlParams.get('lang');
             if (urlLang === 'en' || urlLang === 'ru') return urlLang;
 
-            // Проверка языка из Telegram
+            // Language check from Telegram
             try {
                 const tgLang = window.Telegram?.WebApp?.initDataUnsafe?.user?.language_code;
                 if (tgLang) return tgLang.startsWith('ru') ? 'ru' : 'en';
@@ -1238,11 +1238,11 @@
                 console.warn('Telegram error:', e);
             }
 
-            // Проверка localStorage
+            // LocalStorage check
             const storedLocale = localStorage.getItem('locale');
             if (storedLocale && storedLocale in MESSAGES) return storedLocale;
 
-            // Проверка браузера
+            // Browser check
             const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
             const russianLanguageCodes = ['ru', 'ru-ru', 'ru_ru', 'by', 'kz', 'kg', 'uz'];
             return russianLanguageCodes.some(code => browserLang.includes(code)) ? 'ru' : 'en';
@@ -1295,7 +1295,7 @@
             Alpine.data('copyLink', () => ({
                 isDisabled: false,
                 async copyToClipboard() {
-                    // Получаем URL для копирования
+                    // Get URL to copy
                     const urlToCopy = subscriptionUrl;
 
                     try {
@@ -1306,7 +1306,7 @@
                         }, 3000);
                     } catch (err) {
                         console.error('Failed to copy:', err);
-                        // Создаем временный input элемент для копирования
+                        // Create a temporary input element for copying
                         const tempInput = document.createElement('input');
                         tempInput.value = urlToCopy;
                         document.body.appendChild(tempInput);
