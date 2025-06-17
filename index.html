@@ -26,7 +26,7 @@
 
         // Обновляем URL для подписки
         const SUB_URL = subscriptionUrl;
-        const happUrl = "happ://add/" + SUB_URL + "#Title";
+        const happUrl = "happ://add/" + encodeURIComponent(SUB_URL) + "#" + encodeURIComponent(userData.username || 'Title');
 
         // Функция для обработки URL параметров
         function handleUrlParameters() {
@@ -961,10 +961,10 @@
     <script src="https://unpkg.com/qr-code-styling@1.9.1/lib/qr-code-styling.js"></script>
     <script>
         const SUB_URL_SCHEMES = {
-            pc: `happ://add/${window.subscriptionUrl}#${userData.username || 'user'}`,
-            android: `happ://add/${window.subscriptionUrl}#${userData.username || 'user'}`,
-            ios: `happ://add/${window.subscriptionUrl}#${userData.username || 'user'}`,
-            macos: `happ://add/${window.subscriptionUrl}#${userData.username || 'user'}`,
+            pc: happUrl,
+            android: happUrl,
+            ios: happUrl,
+            macos: happUrl,
         };
         // Default locale used to display content if
         // the user's locale is not specified.
